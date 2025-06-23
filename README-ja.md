@@ -38,12 +38,16 @@ import {
 } from "jsr:@grakeice/netscape-bookmark-parser";
 ```
 
+> **注意:** JSR 版は Node.js/Deno ランタイム版のみを含んでいます。ブラウザサポートが必要な場合は、npm パッケージをご使用ください。
+
 ### ブラウザ
 
 ```typescript
-// ブラウザ環境では、Web最適化版を使用
+// ブラウザ環境では、npmのWeb最適化版を使用
 import { BookmarksParser, BookmarksTree } from "netscape-bookmark-parser/web";
 ```
+
+> **ブラウザサポート:** ブラウザ互換性は npm パッケージを通してのみ利用可能です。JSR パッケージは、プラットフォーム固有の依存関係のため、Web 最適化版を含んでいません。
 
 ## 使用方法
 

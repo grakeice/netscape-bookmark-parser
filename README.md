@@ -40,12 +40,16 @@ import {
 } from "jsr:@grakeice/netscape-bookmark-parser";
 ```
 
+> **Note:** The JSR version only includes the Node.js/Deno runtime version. For browser support, please use the npm package.
+
 ### Browser
 
 ```typescript
-// For browser environments, use the web-optimized version
+// For browser environments, use the web-optimized version from npm
 import { BookmarksParser, BookmarksTree } from "netscape-bookmark-parser/web";
 ```
+
+> **Browser Support:** Browser compatibility is only available through the npm package. The JSR package does not include the web-optimized version due to platform-specific dependencies.
 
 ## Usage
 
@@ -152,26 +156,13 @@ console.log(devFolder.get("GitHub")); // "https://github.com"
 
 ### Web-Optimized Version
 
+> **Important:** Browser support is only available via npm installation. JSR version does not include browser-compatible builds.
+
 The library provides a browser-optimized version that eliminates Node.js dependencies and uses native browser APIs:
 
 ```typescript
-// Import browser-optimized version
+// Import browser-optimized version (npm only)
 import { BookmarksParser, BookmarksTree } from "netscape-bookmark-parser/web";
-
-// Works with browser File API
-document
-	.getElementById("fileInput")
-	.addEventListener("change", async (event) => {
-		const file = event.target.files[0];
-		const htmlContent = await file.text();
-
-		const bookmarksTree = BookmarksParser.parse(htmlContent);
-		console.log(bookmarksTree.toJSON());
-	});
-
-// Use native DOMParser for fromDOM method
-const dom = new DOMParser().parseFromString(htmlContent, "text/html");
-const tree = BookmarksTree.fromDOM(dom);
 ```
 
 ### BookmarksParser Class
