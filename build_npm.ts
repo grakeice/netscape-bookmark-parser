@@ -31,6 +31,7 @@ await build({
 		author: "grakeice",
 		license: "MIT",
 		repository: "https://github.com/grakeice/netscape-bookmark-parser",
+		keywords: ["bookmark", "parser", "netscape"],
 	},
 	postBuild() {
 		// ライセンスとREADMEをコピー
