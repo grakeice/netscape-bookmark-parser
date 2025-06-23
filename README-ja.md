@@ -10,7 +10,7 @@
 > **注意:**  
 > この README は AI 生成されたドキュメントです。詳細はほぼ正確ですが、不正確な説明が含まれる可能性があります。
 
-ブラウザのブックマークファイル（HTML 形式）を解析し、構造化データとして操作するための TypeScript/JavaScript ライブラリです。Deno と Node.js の両方のランタイムに対応しています。
+ブラウザのブックマークファイル（HTML 形式）を解析し、構造化データとして操作するための TypeScript/JavaScript ライブラリです。Deno、Node.js、**ブラウザ**の全てのランタイムに対応しています。
 
 ## 機能
 
@@ -36,6 +36,13 @@ import {
 	BookmarksParser,
 	BookmarksTree,
 } from "jsr:@grakeice/netscape-bookmark-parser";
+```
+
+### ブラウザ
+
+```typescript
+// ブラウザ環境では、Web最適化版を使用
+import { BookmarksParser, BookmarksTree } from "netscape-bookmark-parser/web";
 ```
 
 ## 使用方法
@@ -543,7 +550,24 @@ MIT License - 詳細は[LICENSE](LICENSE)ファイルを参照してください
 
 ## 変更履歴
 
-### v1.0.1（最新）
+### v1.1.0（最新）
+
+- 🌐 **ブラウザサポート**: ブラウザ環境用の Web 最適化版を追加
+- 📦 **デュアルエントリーポイント**: Node.js/Deno 用（`./mod.ts`）とブラウザ用（`./mod_web.ts`）の分離ビルド
+- ⚡ **ネイティブ DOM API**: ブラウザ版はネイティブ DOMParser と DOM API を使用してパフォーマンス向上
+- 🔧 **ビルド最適化**: ブラウザ互換性のためのポリフィル除去を含む強化されたビルドプロセス
+- 📚 **ドキュメント更新**: ブラウザ使用例と API リファレンスを追加
+
+### v1.0.1
 
 - ✨ **コア機能**: 完全な HTML ブックマークファイル解析機能
-- 🏗️ **BookmarksTree クラス**: Map インターフェースを持つ階層
+- 🏗️ **BookmarksTree クラス**: Map インターフェースを持つ階層構造管理
+- 🔄 **双方向変換**: JSON ↔ HTML ↔ DOM 変換サポート
+- 🧪 **包括的テスト**: エッジケースハンドリングを含む完全なテストカバレッジ
+- 📦 **マルチランタイムサポート**: ネイティブ Deno と Node.js 互換性
+- 🔧 **TypeScript サポート**: 完全な型定義と IntelliSense
+- 🤖 **CI/CD パイプライン**: GitHub Actions による自動テストと公開
+- 📚 **ドキュメント**: 例と API リファレンスを含む包括的な README
+- 🌐 **国際化サポート**: Unicode と多言語ブックマークハンドリング
+- ⚡ **パフォーマンス最適化**: 大規模ブックマークコレクションの効率的解析
+- 🛡️ **エラーハンドリング**: 不正な HTML と無効な URL の適切な処理

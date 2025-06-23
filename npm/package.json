@@ -1,6 +1,6 @@
 {
   "name": "netscape-bookmark-parser",
-  "version": "1.0.1",
+  "version": "1.1.0",
   "author": "grakeice",
   "repository": "https://github.com/grakeice/netscape-bookmark-parser",
   "license": "MIT",
@@ -8,6 +8,9 @@
   "exports": {
     ".": {
       "import": "./esm/mod.js"
+    },
+    "./web": {
+      "import": "./esm/mod_web.js"
     }
   },
   "scripts": {},

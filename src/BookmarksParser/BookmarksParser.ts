@@ -5,7 +5,7 @@
  * https://opensource.org/licenses/MIT
  */
 
-import { DOMParser } from "@b-fuze/deno-dom";
+import { DOMParser } from "../deps.ts";
 import { BookmarksTree } from "../BookmarksTree/index.ts";
 
 export class BookmarksParser {

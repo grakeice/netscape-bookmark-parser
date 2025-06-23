@@ -40,6 +40,13 @@ import {
 } from "jsr:@grakeice/netscape-bookmark-parser";
 ```
 
+### Browser
+
+```typescript
+// For browser environments, use the web-optimized version
+import { BookmarksParser, BookmarksTree } from "netscape-bookmark-parser/web";
+```
+
 ## Usage
 
 ### Basic Example
@@ -142,6 +149,30 @@ console.log(devFolder.get("GitHub")); // "https://github.com"
 ```
 
 ## API Reference
+
+### Web-Optimized Version
+
+The library provides a browser-optimized version that eliminates Node.js dependencies and uses native browser APIs:
+
+```typescript
+// Import browser-optimized version
+import { BookmarksParser, BookmarksTree } from "netscape-bookmark-parser/web";
+
+// Works with browser File API
+document
+	.getElementById("fileInput")
+	.addEventListener("change", async (event) => {
+		const file = event.target.files[0];
+		const htmlContent = await file.text();
+
+		const bookmarksTree = BookmarksParser.parse(htmlContent);
+		console.log(bookmarksTree.toJSON());
+	});
+
+// Use native DOMParser for fromDOM method
+const dom = new DOMParser().parseFromString(htmlContent, "text/html");
+const tree = BookmarksTree.fromDOM(dom);
+```
 
 ### BookmarksParser Class
 
@@ -544,7 +575,15 @@ When reporting issues, please include:
 
 ## Changelog
 
-### v1.0.1 (Latest)
+### v1.1.0 (Latest)
+
+- 🌐 **Browser Support**: Added web-optimized version for browser environments
+- 📦 **Dual Entry Points**: Separate builds for Node.js/Deno (`./mod.ts`) and browsers (`./mod_web.ts`)
+- ⚡ **Native DOM APIs**: Browser version uses native DOMParser and DOM APIs for better performance
+- 🔧 **Build Optimization**: Enhanced build process with polyfill removal for browser compatibility
+- 📚 **Updated Documentation**: Added browser usage examples and API reference
+
+### v1.0.1
 
 - ✨ **Core Features**: Complete HTML bookmark file parsing functionality
 - 🏗️ **BookmarksTree Class**: Hierarchical structure management with Map interface
