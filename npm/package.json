@@ -1,6 +1,6 @@
 {
   "name": "netscape-bookmark-parser",
-  "version": "1.1.1",
+  "version": "1.1.2",
   "keywords": [
     "bookmark",
     "parser",
@@ -19,6 +19,9 @@
     }
   },
   "scripts": {},
+  "publishConfig": {
+    "access": "public"
+  },
   "dependencies": {
     "@deno/shim-deno": "~0.18.0"
   },

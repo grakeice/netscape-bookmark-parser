@@ -77,7 +77,7 @@ function handleFileUpload(event: Event) {
 <script type="importmap">
 	{
 		"imports": {
-			"netscape-bookmark-parser/web": "https://cdn.jsdelivr.net/npm/netscape-bookmark-parser@1.1.1/esm/mod_web.js"
+			"netscape-bookmark-parser/web": "https://cdn.jsdelivr.net/npm/netscape-bookmark-parser@1.1.2/esm/mod_web.js"
 		}
 	}
 </script>
@@ -96,7 +96,7 @@ function handleFileUpload(event: Event) {
 	import {
 		BookmarksParser,
 		BookmarksTree,
-	} from "https://cdn.jsdelivr.net/npm/netscape-bookmark-parser@1.1.1/esm/mod_web.js";
+	} from "https://cdn.jsdelivr.net/npm/netscape-bookmark-parser@1.1.2/esm/mod_web.js";
 
 	// import maps なしでの直接 CDN インポート
 </script>
@@ -622,7 +622,13 @@ MIT License - 詳細は[LICENSE](LICENSE)ファイルを参照してください
 
 ## 変更履歴
 
-### v1.1.1（最新）
+### v1.1.2（最新）
+
+- 📝 **ドキュメント強化**: 最新バージョン参照と改善された例を含む包括的な README ドキュメントの更新
+- 🔧 **バージョン一貫性**: 全ドキュメントとコード例でのバージョン番号の同期
+- 📚 **コンテンツ更新**: より明確性のためのインストール手順、使用例、API ドキュメントの改良
+
+### v1.1.1
 
 - 🛡️ **セキュリティ強化**: [`BookmarksTree.prototype.HTMLText`](src/BookmarksTree/BookmarksTree.ts) がブックマークのタイトルと URL の HTML エンティティを適切にエスケープするように修正
 - 🔧 **コード一貫性**: Node.js とブラウザ版間で HTML エスケープ動作を統一
