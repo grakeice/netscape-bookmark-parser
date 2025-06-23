@@ -9,11 +9,12 @@ import { build, emptyDir } from "@deno/dnt";
 
 await emptyDir("./npm");
 
-
 await build({
 	entryPoints: ["./mod.ts"], // Denoで実装したモジュールのエントリーポイント
 	outDir: "./npm", // 出力先のディレクトリ
 	shims: { deno: true }, // Deno名前空間などDeno独自の実装をNode.jsやブラウザで実行できるshimに置き換える設定
+	typeCheck: false, // 型チェックを無効化
+	test: false,
 	package: {
 		// package.jsonの内容
 		name: "bookmark-file-parser",

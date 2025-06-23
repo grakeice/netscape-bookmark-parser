@@ -92,56 +92,44 @@ export class BookmarksTree extends Map<string, string | BookmarksTree> {
 	}
 
 	toDOM(): HTMLDocument {
-		const document = new DOMParser().parseFromString(
-			`<!DOCTYPE NETSCAPE-Bookmark-file-1>
+		return new DOMParser().parseFromString(this.HTMLString, "text/html");
+	}
+
+	get HTMLString(): string {
+		const createBookmarkList = (
+			tree: BookmarksTree,
+			indent: string = ""
+		): string => {
+			let html = `${indent}<DL><p>\n`;
+
+			for (const [key, value] of tree.entries()) {
+				if (typeof value === "string") {
+					// ブックマークの場合: <DT><A HREF="url">タイトル</A>
+					html += `${indent}    <DT><A HREF="${value}">${key}</A>\n`;
+				} else if (value instanceof BookmarksTree) {
+					// フォルダの場合: <DT><H3>フォルダ名</H3>
+					html += `${indent}    <DT><H3>${key}</H3>\n`;
+					html += createBookmarkList(value, indent + "    ");
+					html += `${indent}    </DL><p>\n`;
+				}
+			}
+
+			if (indent === "") {
+				// ルートレベルの場合は閉じタグを追加
+				html += `</DL>\n`;
+			}
+
+			return html;
+		};
+
+		const htmlTemplate = `<!DOCTYPE NETSCAPE-Bookmark-file-1>
 <HTML>
 <META HTTP-EQUIV="Content-Type" CONTENT="text/html; charset=UTF-8">
 <TITLE>Bookmark</TITLE>
 <H1>Bookmark</H1>
-</HTML>`,
-			"text/html"
-		);
-		const body = document.body;
-
-		const createBookmarkList = (tree: BookmarksTree): Element => {
-			const dl = document.createElement("DL");
-			dl.innerHTML = "<p>";
-
-			for (const [key, value] of tree.entries()) {
-				const dt = document.createElement("DT");
-
-				if (typeof value === "string") {
-					// ブックマークの場合: <DT><A HREF="url">タイトル</A>
-					const anchor = document.createElement("A");
-					anchor.setAttribute("HREF", value);
-					anchor.textContent = key;
-					dt.appendChild(anchor);
-				} else if (value instanceof BookmarksTree) {
-					// フォルダの場合: <DT><H3>フォルダ名</H3>
-					const h3 = document.createElement("H3");
-					h3.textContent = key;
-					dt.appendChild(h3);
-
-					// フォルダの内容をDLとして追加
-					const folderDL = createBookmarkList(value);
-					dl.appendChild(dt);
-					dl.appendChild(folderDL);
-					continue;
-				}
-
-				dl.appendChild(dt);
-			}
-
-			const p = document.createElement("p");
-			dl.appendChild(p);
-
-			return dl;
-		};
-
-		// ルートレベルのブックマークリストを作成
-		const rootDL = createBookmarkList(this);
-		body.appendChild(rootDL);
-
-		return document;
+<BODY>
+${createBookmarkList(this)}</BODY>
+</HTML>`;
+		return htmlTemplate;
 	}
 }

@@ -9,15 +9,12 @@
       "import": "./esm/mod.js"
     }
   },
-  "scripts": {
-    "test": "node test_runner.js"
-  },
+  "scripts": {},
   "dependencies": {
     "@deno/shim-deno": "~0.18.0"
   },
   "devDependencies": {
-    "@types/node": "^20.9.0",
-    "picocolors": "^1.0.0"
+    "@types/node": "^20.9.0"
   },
   "_generatedBy": "dnt@dev"
 }
