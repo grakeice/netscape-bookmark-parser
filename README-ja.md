@@ -1,9 +1,9 @@
 # Netscape Bookmark Parser
 
+ブラウザのブックマークファイル（HTML 形式）を解析し、構造化データとして操作するための TypeScript/JavaScript ライブラリです。Deno と Node.js の両方のランタイムに対応しています。
+
 > **注意:**  
 > この README は AI 生成されたドキュメントです。詳細はほぼ正確ですが、不正確な説明が含まれる可能性があります。
-
-ブラウザのブックマークファイル（HTML 形式）を解析し、構造化データとして操作するための TypeScript/JavaScript ライブラリです。Deno と Node.js の両方のランタイムに対応しています。
 
 ## 機能
 

@@ -1,11 +1,10 @@
 # Netscape Bookmark Parser
 
-> **Note:**  
-> This README is an AI-generated document. Details are mostly accurate but might include inaccurate description.
-
 A TypeScript/JavaScript library for parsing browser bookmark files (HTML format) and manipulating them as structured data. Compatible with both Deno and Node.js runtimes.
 
-日本語ドキュメント: [`./README-ja.md`](./README-ja.md)
+> **Note:**  
+> This README is an AI-generated document. Details are mostly accurate but might include inaccurate description.
+> 日本語ドキュメント: [`./README-ja.md`](./README-ja.md)
 
 ## Features
 
