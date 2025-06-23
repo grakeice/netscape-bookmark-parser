@@ -50,7 +50,7 @@ export class BookmarksTree extends Map<string, string | BookmarksTree> {
 		const document = dom;
 
 		const processElement = (element: Element, currentTree: BookmarksTree) => {
-			const children = Array.from(element.children);
+			const children = Array.from(element.children) as Element[];
 
 			for (let i = 0; i < children.length; i++) {
 				const child = children[i];
