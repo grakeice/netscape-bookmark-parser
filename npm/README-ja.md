@@ -10,7 +10,7 @@
 > **注意:**  
 > この README は AI 生成されたドキュメントです。詳細はほぼ正確ですが、不正確な説明が含まれる可能性があります。
 
-ブラウザのブックマークファイル（HTML 形式）を解析し、構造化データとして操作するための TypeScript/JavaScript ライブラリです。Deno、Node.js、**ブラウザ**の全てのランタイムに対応しています。
+ブラウザのブックマークファイル（HTML 形式）を解析し、構造化データとして操作するための TypeScript/JavaScript ライブラリです。Deno と Node.js の両方のランタイムに対応しています。
 
 ## 機能
 
@@ -38,12 +38,80 @@ import {
 } from "jsr:@grakeice/netscape-bookmark-parser";
 ```
 
+> **注意:** JSR 版は Node.js/Deno ランタイム版のみを含んでいます。ブラウザサポートが必要な場合は、npm パッケージをご使用ください。
+
 ### ブラウザ
+
+#### オプション 1: ビルドツールの使用（推奨）
+
+**Webpack、Vite、Rollup、Parcel など:**
 
 ```typescript
 // ブラウザ環境では、Web最適化版を使用
 import { BookmarksParser, BookmarksTree } from "netscape-bookmark-parser/web";
+
+// 例: アップロードされたブックマークファイルの解析
+function handleFileUpload(event: Event) {
+	const file = (event.target as HTMLInputElement).files?.[0];
+	if (file) {
+		const reader = new FileReader();
+		reader.onload = (e) => {
+			const htmlContent = e.target?.result as string;
+			const bookmarksTree = BookmarksParser.parse(htmlContent);
+			console.log(bookmarksTree.toJSON());
+		};
+		reader.readAsText(file);
+	}
+}
 ```
+
+#### オプション 2: 直接 ES モジュールインポート
+
+```html
+<script type="module">
+	import {
+		BookmarksParser,
+		BookmarksTree,
+	} from "./node_modules/netscape-bookmark-parser/esm/mod_web.js";
+
+	// ブックマーク処理コードをここに...
+</script>
+```
+
+#### オプション 3: Import Maps を使用した CDN
+
+```html
+<script type="importmap">
+	{
+		"imports": {
+			"netscape-bookmark-parser/web": "https://cdn.jsdelivr.net/npm/netscape-bookmark-parser@1.1.0/esm/mod_web.js"
+		}
+	}
+</script>
+<script type="module">
+	import { BookmarksParser, BookmarksTree } from "netscape-bookmark-parser/web";
+
+	// ローカルインポートと同じように動作
+	const tree = BookmarksParser.parse(htmlContent);
+</script>
+```
+
+#### オプション 4: CDN を直接インポート
+
+```html
+<script type="module">
+	import {
+		BookmarksParser,
+		BookmarksTree,
+	} from "https://cdn.jsdelivr.net/npm/netscape-bookmark-parser@1.1.0/esm/mod_web.js";
+
+	// import maps なしでの直接 CDN インポート
+</script>
+```
+
+> **ブラウザサポート:** ブラウザ互換性は npm パッケージを通してのみ利用可能です。JSR パッケージは、プラットフォーム固有の依存関係のため、Web 最適化版を含んでいません。
+
+> **注意:** Web 最適化版は、ネイティブブラウザ API（DOMParser など）を使用し、Node.js ポリフィルを含まないため、ブラウザ環境でより軽量で高速に動作します。
 
 ## 使用方法
 
@@ -147,6 +215,17 @@ console.log(devFolder.get("GitHub")); // "https://github.com"
 ```
 
 ## API リファレンス
+
+### Web 最適化版
+
+> **重要:** ブラウザサポートは npm インストールを通してのみ利用可能です。JSR 版にはブラウザ互換ビルドが含まれていません。
+
+ライブラリは、Node.js 依存関係を排除し、ネイティブブラウザ API を使用するブラウザ最適化版を提供しています:
+
+```typescript
+// ブラウザ最適化版をインポート（npm のみ）
+import { BookmarksParser, BookmarksTree } from "netscape-bookmark-parser/web";
+```
 
 ### BookmarksParser クラス
 
@@ -550,7 +629,14 @@ MIT License - 詳細は[LICENSE](LICENSE)ファイルを参照してください
 
 ## 変更履歴
 
-### v1.1.0（最新）
+### v1.1.1（最新）
+
+- 🛡️ **セキュリティ強化**: [`BookmarksTree.prototype.HTMLText`](src/BookmarksTree/BookmarksTree.ts) がブックマークのタイトルと URL の HTML エンティティを適切にエスケープするように修正
+- 🔧 **コード一貫性**: Node.js とブラウザ版間で HTML エスケープ動作を統一
+- 📝 **ドキュメント更新**: セキュリティ考慮事項を含む API ドキュメントの強化
+- 🐛 **バグ修正**: マイナーな安定性改善とエッジケース処理
+
+### v1.1.0
 
 - 🌐 **ブラウザサポート**: ブラウザ環境用の Web 最適化版を追加
 - 📦 **デュアルエントリーポイント**: Node.js/Deno 用（`./mod.ts`）とブラウザ用（`./mod_web.ts`）の分離ビルド
@@ -571,3 +657,10 @@ MIT License - 詳細は[LICENSE](LICENSE)ファイルを参照してください
 - 🌐 **国際化サポート**: Unicode と多言語ブックマークハンドリング
 - ⚡ **パフォーマンス最適化**: 大規模ブックマークコレクションの効率的解析
 - 🛡️ **エラーハンドリング**: 不正な HTML と無効な URL の適切な処理
+
+### v0.0.1-pre4
+
+- 初期のプレリリース版
+- コア機能の概念実証
+- 基本的な解析実装
+- 初期テスト設定

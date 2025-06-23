@@ -80,16 +80,24 @@ export class BookmarksTree extends Map {
         return new DOMParser().parseFromString(this.HTMLText, "text/html");
     }
     get HTMLText() {
+        const escapeHtml = (text) => {
+            return text
+                .replace(/&/g, "&amp;")
+                .replace(/</g, "&lt;")
+                .replace(/>/g, "&gt;")
+                .replace(/"/g, "&quot;")
+                .replace(/'/g, "&#39;");
+        };
         const createBookmarkList = (tree, indent = "") => {
             let html = `${indent}<DL><p>\n`;
             for (const [key, value] of tree.entries()) {
                 if (typeof value === "string") {
                     // ブックマークの場合: <DT><A HREF="url">タイトル</A>
-                    html += `${indent}    <DT><A HREF="${value}">${key}</A>\n`;
+                    html += `${indent}    <DT><A HREF="${escapeHtml(value)}">${escapeHtml(key)}</A>\n`;
                 }
                 else if (value instanceof BookmarksTree) {
                     // フォルダの場合: <DT><H3>フォルダ名</H3>
-                    html += `${indent}    <DT><H3>${key}</H3>\n`;
+                    html += `${indent}    <DT><H3>${escapeHtml(key)}</H3>\n`;
                     html += createBookmarkList(value, indent + "    ");
                     html += `${indent}    </DL><p>\n`;
                 }

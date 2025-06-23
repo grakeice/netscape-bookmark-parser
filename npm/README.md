@@ -40,12 +40,80 @@ import {
 } from "jsr:@grakeice/netscape-bookmark-parser";
 ```
 
+> **Note:** The JSR version only includes the Node.js/Deno runtime version. For browser support, please use the npm package.
+
 ### Browser
+
+#### Option 1: Using Build Tools (Recommended)
+
+**Webpack, Vite, Rollup, Parcel, etc.:**
 
 ```typescript
 // For browser environments, use the web-optimized version
 import { BookmarksParser, BookmarksTree } from "netscape-bookmark-parser/web";
+
+// Example: Parse uploaded bookmark file
+function handleFileUpload(event: Event) {
+	const file = (event.target as HTMLInputElement).files?.[0];
+	if (file) {
+		const reader = new FileReader();
+		reader.onload = (e) => {
+			const htmlContent = e.target?.result as string;
+			const bookmarksTree = BookmarksParser.parse(htmlContent);
+			console.log(bookmarksTree.toJSON());
+		};
+		reader.readAsText(file);
+	}
+}
 ```
+
+#### Option 2: Direct ES Module Import
+
+```html
+<script type="module">
+	import {
+		BookmarksParser,
+		BookmarksTree,
+	} from "./node_modules/netscape-bookmark-parser/esm/mod_web.js";
+
+	// Your bookmark processing code here...
+</script>
+```
+
+#### Option 3: CDN with Import Maps
+
+```html
+<script type="importmap">
+	{
+		"imports": {
+			"netscape-bookmark-parser/web": "https://cdn.jsdelivr.net/npm/netscape-bookmark-parser@1.1.0/esm/mod_web.js"
+		}
+	}
+</script>
+<script type="module">
+	import { BookmarksParser, BookmarksTree } from "netscape-bookmark-parser/web";
+
+	// Works the same as local imports
+	const tree = BookmarksParser.parse(htmlContent);
+</script>
+```
+
+#### Option 4: Direct CDN Import
+
+```html
+<script type="module">
+	import {
+		BookmarksParser,
+		BookmarksTree,
+	} from "https://cdn.jsdelivr.net/npm/netscape-bookmark-parser@1.1.0/esm/mod_web.js";
+
+	// Direct CDN import without import maps
+</script>
+```
+
+> **Browser Support:** Browser compatibility is only available through the npm package. The JSR package does not include the web-optimized version due to platform-specific dependencies.
+
+> **Note:** The web-optimized version uses native browser APIs (DOMParser, etc.) and does not include Node.js polyfills, making it lighter and faster in browser environments.
 
 ## Usage
 
@@ -152,26 +220,13 @@ console.log(devFolder.get("GitHub")); // "https://github.com"
 
 ### Web-Optimized Version
 
+> **Important:** Browser support is only available via npm installation. JSR version does not include browser-compatible builds.
+
 The library provides a browser-optimized version that eliminates Node.js dependencies and uses native browser APIs:
 
 ```typescript
-// Import browser-optimized version
+// Import browser-optimized version (npm only)
 import { BookmarksParser, BookmarksTree } from "netscape-bookmark-parser/web";
-
-// Works with browser File API
-document
-	.getElementById("fileInput")
-	.addEventListener("change", async (event) => {
-		const file = event.target.files[0];
-		const htmlContent = await file.text();
-
-		const bookmarksTree = BookmarksParser.parse(htmlContent);
-		console.log(bookmarksTree.toJSON());
-	});
-
-// Use native DOMParser for fromDOM method
-const dom = new DOMParser().parseFromString(htmlContent, "text/html");
-const tree = BookmarksTree.fromDOM(dom);
 ```
 
 ### BookmarksParser Class
@@ -575,7 +630,14 @@ When reporting issues, please include:
 
 ## Changelog
 
-### v1.1.0 (Latest)
+### v1.1.1 (Latest)
+
+- 🛡️ **Security Enhancement**: [`BookmarksTree.prototype.HTMLText`](src/BookmarksTree/BookmarksTree.ts) now properly escapes HTML entities in bookmark titles and URLs
+- 🔧 **Code Consistency**: Unified HTML escaping behavior between Node.js and browser versions
+- 📝 **Documentation Updates**: Enhanced API documentation with security considerations
+- 🐛 **Bug Fixes**: Minor stability improvements and edge case handling
+
+### v1.1.0
 
 - 🌐 **Browser Support**: Added web-optimized version for browser environments
 - 📦 **Dual Entry Points**: Separate builds for Node.js/Deno (`./mod.ts`) and browsers (`./mod_web.ts`)

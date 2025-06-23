@@ -630,7 +630,14 @@ When reporting issues, please include:
 
 ## Changelog
 
-### v1.1.0 (Latest)
+### v1.1.1 (Latest)
+
+- 🛡️ **Security Enhancement**: [`BookmarksTree.prototype.HTMLText`](src/BookmarksTree/BookmarksTree.ts) now properly escapes HTML entities in bookmark titles and URLs
+- 🔧 **Code Consistency**: Unified HTML escaping behavior between Node.js and browser versions
+- 📝 **Documentation Updates**: Enhanced API documentation with security considerations
+- 🐛 **Bug Fixes**: Minor stability improvements and edge case handling
+
+### v1.1.0
 
 - 🌐 **Browser Support**: Added web-optimized version for browser environments
 - 📦 **Dual Entry Points**: Separate builds for Node.js/Deno (`./mod.ts`) and browsers (`./mod_web.ts`)
