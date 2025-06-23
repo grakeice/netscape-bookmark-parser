@@ -544,7 +544,7 @@ When reporting issues, please include:
 
 ## Changelog
 
-### v1.0.0 (Latest)
+### v1.0.1 (Latest)
 
 - ✨ **Core Features**: Complete HTML bookmark file parsing functionality
 - 🏗️ **BookmarksTree Class**: Hierarchical structure management with Map interface
