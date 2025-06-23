@@ -5,7 +5,7 @@
  * https://opensource.org/licenses/MIT
  */
 import { BookmarksTree } from "../BookmarksTree/index.js";
-export declare class Parser {
+export declare class BookmarksParser {
     static parse(data: string): BookmarksTree;
 }
-//# sourceMappingURL=Parser.d.ts.map
+//# sourceMappingURL=BookmarksParser.d.ts.map

@@ -21,11 +21,13 @@ await build({
 		version: Deno.args[0],
 		author: "grakeice",
 		license: "MIT",
+		repository: "https://github.com/grakeice/netscape-bookmark-parser",
 	},
 	postBuild() {
 		// steps to run after building and before running the tests
 		Deno.copyFileSync("LICENSE", "npm/LICENSE");
 		Deno.copyFileSync("README.md", "npm/README.md");
+		Deno.copyFileSync("README-ja.md", "npm/README-ja.md");
 	},
 	scriptModule: false,
 });

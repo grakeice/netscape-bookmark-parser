@@ -8,4 +8,4 @@ import "./_dnt.polyfills.js";
 
 
 export { BookmarksTree } from "./src/BookmarksTree/index.js";
-export { Parser } from "./src/Parser/index.js";
+export { BookmarksParser } from "./src/BookmarksParser/index.js";

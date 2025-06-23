@@ -6,4 +6,4 @@
  */
 
 export { BookmarksTree } from "./src/BookmarksTree/index.ts";
-export { Parser } from "./src/Parser/index.ts";
+export { BookmarksParser } from "./src/BookmarksParser/index.ts";

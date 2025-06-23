@@ -5,7 +5,7 @@
  * https://opensource.org/licenses/MIT
  */
 
-import { DOMParser, Element, type HTMLDocument } from "@b-fuze/deno-dom";
+import { DOMParser, type Element, type HTMLDocument } from "@b-fuze/deno-dom";
 
 export class BookmarksTree extends Map<string, string | BookmarksTree> {
 	constructor() {

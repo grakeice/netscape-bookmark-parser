@@ -5,4 +5,4 @@
  * https://opensource.org/licenses/MIT
  */
 
-export { Parser } from "./Parser.js";
+export { BookmarksParser } from "./BookmarksParser.js";

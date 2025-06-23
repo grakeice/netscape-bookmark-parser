@@ -6,7 +6,7 @@
  */
 
 import { assertEquals, assertInstanceOf } from "@std/assert";
-import { Parser } from "./Parser.ts";
+import { BookmarksParser as Parser } from "./BookmarksParser.ts";
 import { BookmarksTree } from "../BookmarksTree/index.ts";
 
 Deno.test("Parser - 基本的なHTMLパース", () => {
