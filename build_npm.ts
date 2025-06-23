@@ -17,7 +17,7 @@ await build({
 	test: false,
 	package: {
 		// package.jsonの内容
-		name: "bookmark-file-parser",
+		name: "netscape-bookmark-parser",
 		version: Deno.args[0],
 		author: "grakeice",
 		license: "MIT",
