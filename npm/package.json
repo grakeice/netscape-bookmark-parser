@@ -1,6 +1,6 @@
 {
   "name": "netscape-bookmark-parser",
-  "version": "0.1.0",
+  "version": "0.0.1-pre2",
   "author": "grakeice",
   "license": "MIT",
   "module": "./esm/mod.js",

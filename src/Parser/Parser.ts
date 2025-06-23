@@ -9,7 +9,7 @@ import { DOMParser } from "@b-fuze/deno-dom";
 import { BookmarksTree } from "../BookmarksTree/index.ts";
 
 export class Parser {
-	static parse(data: string) {
+	static parse(data: string): BookmarksTree {
 		const dom = new DOMParser().parseFromString(data, "text/html");
 		const tree = BookmarksTree.fromDOM(dom);
 		return tree;
