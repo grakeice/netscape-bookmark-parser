@@ -272,7 +272,7 @@ Deno.test("BookmarksTree - 特殊文字のエスケープ処理", () => {
 	tree.set('Quote "Test"', "https://test.com");
 	tree.set("Tag <Test>", "https://tag.com");
 
-	const htmlString = tree.HTMLString;
+	const htmlString = tree.HTMLText;
 
 	// HTML エンティティのエスケープを確認
 	assertEquals(

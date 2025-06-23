@@ -11,6 +11,6 @@ export declare class BookmarksTree extends Map<string, string | BookmarksTree> {
     static fromJSON(json: Record<string, unknown>): BookmarksTree;
     static fromDOM(dom: HTMLDocument): BookmarksTree;
     toDOM(): HTMLDocument;
-    get HTMLString(): string;
+    get HTMLText(): string;
 }
 //# sourceMappingURL=BookmarksTree.d.ts.map

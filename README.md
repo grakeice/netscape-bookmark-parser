@@ -1,11 +1,11 @@
 <!--
  Copyright (c) 2025 grakeice
- 
+
  This software is released under the MIT License.
  https://opensource.org/licenses/MIT
 -->
 
-# Bookmark File Parser
+# Netscape Bookmark Parser
 
 A TypeScript/JavaScript library for parsing browser bookmark files (HTML format) and manipulating them as structured data. Compatible with both Deno and Node.js runtimes.
 
@@ -22,13 +22,13 @@ A TypeScript/JavaScript library for parsing browser bookmark files (HTML format)
 ### Node.js/npm
 
 ```bash
-npm install bookmark-file-parser
+npm install netscape-bookmark-parser
 ```
 
 ### Deno
 
 ```typescript
-import { Parser, BookmarksTree } from "https://deno.land/x/bookmark_file_parser/mod.ts";
+import { Parser, BookmarksTree } from "jsr:@grakeice/netscape-bookmark-parser";
 ```
 
 ## Usage
@@ -36,7 +36,7 @@ import { Parser, BookmarksTree } from "https://deno.land/x/bookmark_file_parser/
 ### Basic Example
 
 ```typescript
-import { Parser, BookmarksTree } from "bookmark-file-parser";
+import { Parser, BookmarksTree } from "netscape-bookmark-parser";
 
 // Read HTML bookmark file
 const htmlContent = `<!DOCTYPE NETSCAPE-Bookmark-file-1>
@@ -106,6 +106,7 @@ Parses HTML bookmark file content and returns a [`BookmarksTree`](src/BookmarksT
 - **`static fromJSON(json: Record<string, unknown>): BookmarksTree`**: Restore tree from JSON
 - **`static fromDOM(dom: HTMLDocument): BookmarksTree`**: Create tree from DOM
 - **`toDOM(): HTMLDocument`**: Convert tree to HTML document
+- **`get HTMLText(): string`**: Get HTML string representation
 
 ## Project Structure
 
@@ -126,10 +127,12 @@ npm/                       # Node.js build artifacts
 ## Supported Formats
 
 ### Input Formats
+
 - **Netscape Bookmark File Format**: Standard HTML bookmark file format
 - HTML files exported from Chrome, Firefox, Safari, Edge, and other browsers
 
 ### Output Formats
+
 - **JSON**: Structured JSON data
 - **HTML**: Standard Netscape Bookmark File Format
 
@@ -139,10 +142,10 @@ npm/                       # Node.js build artifacts
 
 ```json
 {
-  "Folder 1": {
-    "Example": "https://example.com"
-  },
-  "Google": "https://google.com"
+	"Folder 1": {
+		"Example": "https://example.com"
+	},
+	"Google": "https://google.com"
 }
 ```
 
@@ -176,8 +179,8 @@ npm/                       # Node.js build artifacts
 ### Setup
 
 ```bash
-git clone https://github.com/grakeice/bookmark-file-parser.git
-cd bookmark-file-parser
+git clone https://github.com/grakeice/netscape-bookmark-parser.git
+cd netscape-bookmark-parser
 ```
 
 ### Testing with Deno

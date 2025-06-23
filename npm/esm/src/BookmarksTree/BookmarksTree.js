@@ -77,9 +77,9 @@ export class BookmarksTree extends Map {
         return tree;
     }
     toDOM() {
-        return new DOMParser().parseFromString(this.HTMLString, "text/html");
+        return new DOMParser().parseFromString(this.HTMLText, "text/html");
     }
-    get HTMLString() {
+    get HTMLText() {
         const createBookmarkList = (tree, indent = "") => {
             let html = `${indent}<DL><p>\n`;
             for (const [key, value] of tree.entries()) {

@@ -92,10 +92,10 @@ export class BookmarksTree extends Map<string, string | BookmarksTree> {
 	}
 
 	toDOM(): HTMLDocument {
-		return new DOMParser().parseFromString(this.HTMLString, "text/html");
+		return new DOMParser().parseFromString(this.HTMLText, "text/html");
 	}
 
-	get HTMLString(): string {
+	get HTMLText(): string {
 		const createBookmarkList = (
 			tree: BookmarksTree,
 			indent: string = ""
