@@ -19,5 +19,5 @@
 		"strict": true
 	},
 	"unstable": ["sloppy-imports"],
-	"publish": { "exclude": ["./src/web/"] }
+	"publish": { "exclude": ["./src/web/", "./mod_web.ts"] }
 }
