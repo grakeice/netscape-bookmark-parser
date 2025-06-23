@@ -544,9 +544,8 @@ When reporting issues, please include:
 
 ## Changelog
 
-### v1.0.0-pre (Latest)
+### v1.0.0 (Latest)
 
-- 🚀 **Pre-release Version**: Preparing for stable 1.0.0 release
 - ✨ **Core Features**: Complete HTML bookmark file parsing functionality
 - 🏗️ **BookmarksTree Class**: Hierarchical structure management with Map interface
 - 🔄 **Bidirectional Conversion**: JSON ↔ HTML ↔ DOM conversion support

@@ -1,6 +1,6 @@
 {
   "name": "netscape-bookmark-parser",
-  "version": "1.0.0-pre",
+  "version": "1.0.0",
   "author": "grakeice",
   "repository": "https://github.com/grakeice/netscape-bookmark-parser",
   "license": "MIT",

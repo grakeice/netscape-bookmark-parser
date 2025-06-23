@@ -1,6 +1,6 @@
 {
 	"name": "@grakeice/netscape-bookmark-parser",
-	"version": "1.0.0-pre",
+	"version": "1.0.0",
 	"license": "MIT",
 	"exports": {
 		".": "./mod.ts"
