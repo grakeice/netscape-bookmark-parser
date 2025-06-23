@@ -84,7 +84,7 @@ function handleFileUpload(event: Event) {
 <script type="importmap">
 	{
 		"imports": {
-			"netscape-bookmark-parser/web": "https://cdn.jsdelivr.net/npm/netscape-bookmark-parser@1.1.0/esm/mod_web.js"
+			"netscape-bookmark-parser/web": "https://cdn.jsdelivr.net/npm/netscape-bookmark-parser@1.1.1/esm/mod_web.js"
 		}
 	}
 </script>
@@ -103,7 +103,7 @@ function handleFileUpload(event: Event) {
 	import {
 		BookmarksParser,
 		BookmarksTree,
-	} from "https://cdn.jsdelivr.net/npm/netscape-bookmark-parser@1.1.0/esm/mod_web.js";
+	} from "https://cdn.jsdelivr.net/npm/netscape-bookmark-parser@1.1.1/esm/mod_web.js";
 
 	// import maps なしでの直接 CDN インポート
 </script>
