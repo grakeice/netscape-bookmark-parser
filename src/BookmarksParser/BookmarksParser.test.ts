@@ -5,9 +5,10 @@
  * https://opensource.org/licenses/MIT
  */
 
-import { assertEquals, assertInstanceOf } from "@std/assert";
-import { BookmarksParser as Parser } from "./BookmarksParser.ts";
+import { assertEquals, assertInstanceOf, assertThrows } from "@std/assert";
+import { BookmarksParser } from "./BookmarksParser.ts";
 import { BookmarksTree } from "../BookmarksTree/index.ts";
+import { DOMParser } from "../deps.ts";
 
 Deno.test("Parser - 基本的なHTMLパース", () => {
 	const htmlContent = `<!DOCTYPE NETSCAPE-Bookmark-file-1>
@@ -20,7 +21,7 @@ Deno.test("Parser - 基本的なHTMLパース", () => {
 </BODY>
 </HTML>`;
 
-	const tree = Parser.parse(htmlContent);
+	const tree = BookmarksParser.parse(htmlContent);
 
 	assertInstanceOf(tree, BookmarksTree);
 	assertEquals(tree.get("Google"), "https://google.com");
@@ -43,7 +44,7 @@ Deno.test("Parser - フォルダ構造を含むHTMLパース", () => {
 </BODY>
 </HTML>`;
 
-	const tree = Parser.parse(htmlContent);
+	const tree = BookmarksParser.parse(htmlContent);
 
 	assertEquals(tree.get("Google"), "https://google.com");
 	assertInstanceOf(tree.get("Development"), BookmarksTree);
@@ -77,7 +78,7 @@ Deno.test("Parser - 複雑な階層構造のHTMLパース", () => {
 </BODY>
 </HTML>`;
 
-	const tree = Parser.parse(htmlContent);
+	const tree = BookmarksParser.parse(htmlContent);
 
 	assertEquals(tree.get("Google"), "https://google.com");
 	assertEquals(tree.size, 3);
@@ -120,7 +121,7 @@ Do Not Edit! -->
     </DL><p>
 </DL><p>`;
 
-	const tree = Parser.parse(htmlContent);
+	const tree = BookmarksParser.parse(htmlContent);
 
 	assertInstanceOf(tree.get("ブックマーク バー"), BookmarksTree);
 	assertInstanceOf(tree.get("その他のブックマーク"), BookmarksTree);
@@ -142,7 +143,7 @@ Deno.test("Parser - 空のHTMLパース", () => {
 </BODY>
 </HTML>`;
 
-	const tree = Parser.parse(htmlContent);
+	const tree = BookmarksParser.parse(htmlContent);
 
 	assertInstanceOf(tree, BookmarksTree);
 	assertEquals(tree.size, 0);
@@ -151,7 +152,7 @@ Deno.test("Parser - 空のHTMLパース", () => {
 Deno.test("Parser - 無効なHTMLの処理", () => {
 	const htmlContent = `<html><body><p>This is not a bookmark file</p></body></html>`;
 
-	const tree = Parser.parse(htmlContent);
+	const tree = BookmarksParser.parse(htmlContent);
 
 	assertInstanceOf(tree, BookmarksTree);
 	assertEquals(tree.size, 0);
@@ -171,7 +172,7 @@ Deno.test("Parser - 特殊文字を含むHTMLパース", () => {
 </BODY>
 </HTML>`;
 
-	const tree = Parser.parse(htmlContent);
+	const tree = BookmarksParser.parse(htmlContent);
 
 	assertEquals(
 		tree.get("検索 & テスト"),
@@ -184,7 +185,7 @@ Deno.test("Parser - 特殊文字を含むHTMLパース", () => {
 });
 
 Deno.test("Parser - 空文字列の処理", () => {
-	const tree = Parser.parse("");
+	const tree = BookmarksParser.parse("");
 
 	assertInstanceOf(tree, BookmarksTree);
 	assertEquals(tree.size, 0);
@@ -202,11 +203,58 @@ Deno.test("Parser - HREF属性のないリンクの処理", () => {
 </BODY>
 </HTML>`;
 
-	const tree = Parser.parse(htmlContent);
+	const tree = BookmarksParser.parse(htmlContent);
 
 	// 有効なリンクのみが追加される
 	assertEquals(tree.size, 1);
 	assertEquals(tree.get("有効なリンク"), "https://valid.com");
 	assertEquals(tree.has("無効なリンク"), false);
 	assertEquals(tree.has("空のリンク"), false);
+});
+
+Deno.test("Parser.parseFromHTMLString works like parse", () => {
+	const html = `<!DOCTYPE NETSCAPE-Bookmark-file-1>\n<HTML>\n<BODY>\n<DL><p>\n    <DT><A HREF=\"https://google.com\">Google</A>\n</DL><p>\n</BODY>\n</HTML>`;
+	const tree1 = BookmarksParser.parse(html);
+	const tree2 = BookmarksParser.parseFromHTMLString(html);
+	assertEquals(tree1.toJSON(), tree2.toJSON());
+});
+
+Deno.test("Parser.parseFromDOM works", () => {
+	const html = `<!DOCTYPE NETSCAPE-Bookmark-file-1>\n<HTML>\n<BODY>\n<DL><p>\n    <DT><A HREF=\"https://google.com\">Google</A>\n</DL><p>\n</BODY>\n</HTML>`;
+	const dom = new DOMParser().parseFromString(html, "text/html");
+	const tree = BookmarksParser.parseFromDOM(dom);
+	assertInstanceOf(tree, BookmarksTree);
+	assertEquals(tree.get("Google"), "https://google.com");
+});
+
+Deno.test("Parser.parseFromJSONString and parseFromJSON", () => {
+	const json =
+		'{"Google":"https://google.com","Dev":{"GitHub":"https://github.com"}}';
+	const obj = {
+		Google: "https://google.com",
+		Dev: { GitHub: "https://github.com" },
+	};
+	const treeFromJSONString = BookmarksParser.parseFromJSONString(json);
+	const treeFromJSON = BookmarksParser.parseFromJSON(obj);
+	assertInstanceOf(treeFromJSONString, BookmarksTree);
+	assertInstanceOf(treeFromJSON, BookmarksTree);
+	assertEquals(treeFromJSONString.toJSON(), treeFromJSON.toJSON());
+	assertEquals(treeFromJSONString.get("Google"), "https://google.com");
+	assertEquals(
+		(treeFromJSONString.get("Dev") as BookmarksTree).get("GitHub"),
+		"https://github.com"
+	);
+});
+
+Deno.test("Parser.parseFromJSONString with invalid JSON throws", () => {
+	const invalid = '{"Google": }';
+	assertThrows(() => {
+		BookmarksParser.parseFromJSONString(invalid);
+	});
+});
+
+Deno.test("Parser.parseFromJSON with empty object", () => {
+	const tree = BookmarksParser.parseFromJSON({});
+	assertInstanceOf(tree, BookmarksTree);
+	assertEquals(tree.size, 0);
 });

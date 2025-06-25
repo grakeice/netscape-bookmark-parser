@@ -472,3 +472,26 @@ Deno.test("BookmarksTree - 循環参照の防止", () => {
 	const nestedFolder = rootFolder["Nested"] as Record<string, unknown>;
 	assertEquals(nestedFolder["Link"], "https://example.com");
 });
+
+Deno.test(
+	"BookmarksTree - HTMLString/HTMLText getter returns same value",
+	() => {
+		const tree = new BookmarksTree();
+		tree.set("Google", "https://google.com");
+		tree.set("GitHub", "https://github.com");
+
+		const htmlString = tree.HTMLString;
+		const htmlText = tree.HTMLText;
+
+		assertEquals(htmlString, htmlText);
+		assertEquals(typeof htmlString, "string");
+		assertEquals(htmlString.includes("https://google.com"), true);
+		assertEquals(htmlString.includes("https://github.com"), true);
+	}
+);
+
+Deno.test("BookmarksTree - HTMLText is deprecated alias for HTMLString", () => {
+	const tree = new BookmarksTree();
+	tree.set("Test", "https://test.com");
+	assertEquals(tree.HTMLText, tree.HTMLString);
+});
