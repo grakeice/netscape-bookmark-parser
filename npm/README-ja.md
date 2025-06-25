@@ -1,9 +1,9 @@
 # Netscape Bookmark Parser
 
+ブラウザのブックマークファイル（HTML 形式）を解析し、構造化データとして操作するための TypeScript/JavaScript ライブラリです。Deno と Node.js の両方のランタイムに対応しています。
+
 > **注意:**  
 > この README は AI 生成されたドキュメントです。詳細はほぼ正確ですが、不正確な説明が含まれる可能性があります。
-
-ブラウザのブックマークファイル（HTML 形式）を解析し、構造化データとして操作するための TypeScript/JavaScript ライブラリです。Deno と Node.js の両方のランタイムに対応しています。
 
 ## 機能
 
@@ -20,6 +20,10 @@
 
 ```bash
 npm install netscape-bookmark-parser
+```
+
+```typescript
+import { BookmarksParser, BookmarksTree } from "netscape-bookmark-parser";
 ```
 
 ### Deno
@@ -58,26 +62,13 @@ function handleFileUpload(event: Event) {
 }
 ```
 
-#### オプション 2: 直接 ES モジュールインポート
-
-```html
-<script type="module">
-	import {
-		BookmarksParser,
-		BookmarksTree,
-	} from "./node_modules/netscape-bookmark-parser/esm/mod_web.js";
-
-	// ブックマーク処理コードをここに...
-</script>
-```
-
-#### オプション 3: Import Maps を使用した CDN
+#### オプション 2: Import Maps を使用した CDN
 
 ```html
 <script type="importmap">
 	{
 		"imports": {
-			"netscape-bookmark-parser/web": "https://cdn.jsdelivr.net/npm/netscape-bookmark-parser@1.1.2/esm/mod_web.js"
+			"netscape-bookmark-parser/web": "https://cdn.jsdelivr.net/npm/netscape-bookmark-parser@1.1.3/esm/mod_web.js"
 		}
 	}
 </script>
@@ -89,14 +80,14 @@ function handleFileUpload(event: Event) {
 </script>
 ```
 
-#### オプション 4: CDN を直接インポート
+#### オプション 3: CDN を直接インポート
 
 ```html
 <script type="module">
 	import {
 		BookmarksParser,
 		BookmarksTree,
-	} from "https://cdn.jsdelivr.net/npm/netscape-bookmark-parser@1.1.2/esm/mod_web.js";
+	} from "https://cdn.jsdelivr.net/npm/netscape-bookmark-parser@1.1.3/esm/mod_web.js";
 
 	// import maps なしでの直接 CDN インポート
 </script>
@@ -622,7 +613,12 @@ MIT License - 詳細は[LICENSE](LICENSE)ファイルを参照してください
 
 ## 変更履歴
 
-### v1.1.2（最新）
+### v1.1.3（最新）
+
+- 📝 **JSDoc コメント追加**: 主要なクラス・メソッドに JSDoc 形式のコメントを追加し、型情報と API 自動ドキュメント生成を強化
+- 📚 **ドキュメント更新**: インストール手順（Node.js/npm）に TypeScript でのインポート例を追加
+
+### v1.1.2
 
 - 📝 **ドキュメント強化**: 最新バージョン参照と改善された例を含む包括的な README ドキュメントの更新
 - 🔧 **バージョン一貫性**: 全ドキュメントとコード例でのバージョン番号の同期

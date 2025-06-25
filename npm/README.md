@@ -1,11 +1,10 @@
 # Netscape Bookmark Parser
 
-> **Note:**  
-> This README is an AI-generated document. Details are mostly accurate but might include inaccurate description.
-
 A TypeScript/JavaScript library for parsing browser bookmark files (HTML format) and manipulating them as structured data. Compatible with both Deno and Node.js runtimes.
 
-日本語ドキュメント: [`./README-ja.md`](./README-ja.md)
+> **Note:**  
+> This README is an AI-generated document. Details are mostly accurate but might include inaccurate description.
+> 日本語ドキュメント: [`./README-ja.md`](./README-ja.md)
 
 ## Features
 
@@ -22,6 +21,10 @@ A TypeScript/JavaScript library for parsing browser bookmark files (HTML format)
 
 ```bash
 npm install netscape-bookmark-parser
+```
+
+```typescript
+import { BookmarksParser, BookmarksTree } from "netscape-bookmark-parser";
 ```
 
 ### Deno
@@ -60,26 +63,13 @@ function handleFileUpload(event: Event) {
 }
 ```
 
-#### Option 2: Direct ES Module Import
-
-```html
-<script type="module">
-	import {
-		BookmarksParser,
-		BookmarksTree,
-	} from "./node_modules/netscape-bookmark-parser/esm/mod_web.js";
-
-	// Your bookmark processing code here...
-</script>
-```
-
-#### Option 3: CDN with Import Maps
+#### Option 2: CDN with Import Maps
 
 ```html
 <script type="importmap">
 	{
 		"imports": {
-			"netscape-bookmark-parser/web": "https://cdn.jsdelivr.net/npm/netscape-bookmark-parser@1.1.2/esm/mod_web.js"
+			"netscape-bookmark-parser/web": "https://cdn.jsdelivr.net/npm/netscape-bookmark-parser@1.1.3/esm/mod_web.js"
 		}
 	}
 </script>
@@ -91,14 +81,14 @@ function handleFileUpload(event: Event) {
 </script>
 ```
 
-#### Option 4: Direct CDN Import
+#### Option 3: Direct CDN Import
 
 ```html
 <script type="module">
 	import {
 		BookmarksParser,
 		BookmarksTree,
-	} from "https://cdn.jsdelivr.net/npm/netscape-bookmark-parser@1.1.2/esm/mod_web.js";
+	} from "https://cdn.jsdelivr.net/npm/netscape-bookmark-parser@1.1.3/esm/mod_web.js";
 
 	// Direct CDN import without import maps
 </script>
@@ -623,7 +613,12 @@ When reporting issues, please include:
 
 ## Changelog
 
-### v1.1.2 (Latest)
+### v1.1.3 (Latest)
+
+- 📝 **Added JSDoc comments**: Added JSDoc-style comments to major classes and methods to improve type information and enable automatic API documentation generation
+- 📚 **Documentation Update**: Added TypeScript import example for Node.js/npm in the Installation section
+
+### v1.1.2
 
 - 📝 **Documentation Enhancement**: Updated comprehensive README documentation with latest version references and improved examples
 - 🔧 **Version Consistency**: Synchronized version numbers across all documentation and code examples
