@@ -37,7 +37,7 @@ export class BookmarksParser {
 	/**
 	 * Alias for the {@link parseFromHTMLString} method.
 	 *
-	 * @param data HTML string in Netscape Bookmark format
+	 * @param htmlString HTML string in Netscape Bookmark format
 	 * @returns The parsed BookmarksTree
 	 *
 	 * @example
@@ -45,14 +45,14 @@ export class BookmarksParser {
 	 * const tree = BookmarksParser.parse(bookmarkHtml);
 	 * ```
 	 */
-	static parse(data: string): BookmarksTree {
-		return this.parseFromHTMLString(data);
+	static parse(htmlString: string): BookmarksTree {
+		return this.parseFromHTMLString(htmlString);
 	}
 
 	/**
 	 * Parses a Netscape Bookmark format HTML string and returns a BookmarksTree.
 	 *
-	 * @param data HTML string in Netscape Bookmark format
+	 * @param htmlString HTML string in Netscape Bookmark format
 	 * @returns The parsed BookmarksTree
 	 *
 	 * @example
@@ -60,8 +60,8 @@ export class BookmarksParser {
 	 * const tree = BookmarksParser.parseFromHTMLString(bookmarkHtml);
 	 * ```
 	 */
-	static parseFromHTMLString(data: string): BookmarksTree {
-		const dom = new DOMParser().parseFromString(data, "text/html");
+	static parseFromHTMLString(htmlString: string): BookmarksTree {
+		const dom = new DOMParser().parseFromString(htmlString, "text/html");
 		const tree = BookmarksTree.fromDOM(dom);
 		return tree;
 	}
