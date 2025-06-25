@@ -157,7 +157,7 @@ export class BookmarksTree extends Map {
      * ```
      */
     toDOM() {
-        return new DOMParser().parseFromString(this.HTMLText, "text/html");
+        return new DOMParser().parseFromString(this.HTMLString, "text/html");
     }
     /**
      * Gets the BookmarksTree as an HTML string in Netscape Bookmark format
@@ -171,11 +171,11 @@ export class BookmarksTree extends Map {
      * ```typescript
      * const tree = new BookmarksTree();
      * tree.set("Google", "https://google.com");
-     * const html = tree.HTMLText;
+     * const html = tree.HTMLString;
      * console.log(html); // <!DOCTYPE NETSCAPE-Bookmark-file-1>...
      * ```
      */
-    get HTMLText() {
+    get HTMLString() {
         const escapeHtml = (text) => {
             return text
                 .replace(/&/g, "&amp;")
@@ -213,5 +213,13 @@ export class BookmarksTree extends Map {
 ${createBookmarkList(this)}</BODY>
 </HTML>`;
         return htmlTemplate;
+    }
+    /**
+     * @deprecated Use {@link HTMLString} instead.
+     *
+     * Gets the BookmarksTree as an HTML string in Netscape Bookmark format.
+     */
+    get HTMLText() {
+        return this.HTMLString;
     }
 }

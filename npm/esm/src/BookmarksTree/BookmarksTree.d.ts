@@ -103,9 +103,15 @@ export declare class BookmarksTree extends Map<string, string | BookmarksTree> {
      * ```typescript
      * const tree = new BookmarksTree();
      * tree.set("Google", "https://google.com");
-     * const html = tree.HTMLText;
+     * const html = tree.HTMLString;
      * console.log(html); // <!DOCTYPE NETSCAPE-Bookmark-file-1>...
      * ```
+     */
+    get HTMLString(): string;
+    /**
+     * @deprecated Use {@link HTMLString} instead.
+     *
+     * Gets the BookmarksTree as an HTML string in Netscape Bookmark format.
      */
     get HTMLText(): string;
 }

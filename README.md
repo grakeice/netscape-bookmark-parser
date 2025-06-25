@@ -36,7 +36,7 @@ import {
 } from "jsr:@grakeice/netscape-bookmark-parser";
 ```
 
-> **Note:** The JSR version only includes the Node.js/Deno runtime version. For browser support, please use the npm package.
+> **Note:** The JSR version only includes the Node.js/Deno runtime. For browser support, please use the npm package.
 
 ### Browser
 
@@ -69,14 +69,12 @@ function handleFileUpload(event: Event) {
 <script type="importmap">
 	{
 		"imports": {
-			"netscape-bookmark-parser/web": "https://cdn.jsdelivr.net/npm/netscape-bookmark-parser@1.1.3/esm/mod_web.js"
+			"netscape-bookmark-parser/web": "https://cdn.jsdelivr.net/npm/netscape-bookmark-parser@1.1.4/esm/mod_web.js"
 		}
 	}
 </script>
 <script type="module">
 	import { BookmarksParser, BookmarksTree } from "netscape-bookmark-parser/web";
-
-	// Works the same as local imports
 	const tree = BookmarksParser.parse(htmlContent);
 </script>
 ```
@@ -88,9 +86,7 @@ function handleFileUpload(event: Event) {
 	import {
 		BookmarksParser,
 		BookmarksTree,
-	} from "https://cdn.jsdelivr.net/npm/netscape-bookmark-parser@1.1.3/esm/mod_web.js";
-
-	// Direct CDN import without import maps
+	} from "https://cdn.jsdelivr.net/npm/netscape-bookmark-parser@1.1.4/esm/mod_web.js";
 </script>
 ```
 
@@ -212,110 +208,137 @@ The library provides a browser-optimized version that eliminates Node.js depende
 import { BookmarksParser, BookmarksTree } from "netscape-bookmark-parser/web";
 ```
 
+> **Note:** The web-optimized version uses native browser APIs (DOMParser, etc.) and does not include Node.js polyfills, making it lighter and faster in browser environments.
+
 ### BookmarksParser Class
 
-The [`BookmarksParser`](src/BookmarksParser/BookmarksParser.ts) class provides static methods for parsing HTML bookmark files.
-
-#### `BookmarksParser.parse(htmlContent: string): BookmarksTree`
-
-Parses HTML bookmark file content and returns a [`BookmarksTree`](src/BookmarksTree/BookmarksTree.ts) instance.
-
-- **Parameter**: `htmlContent` - HTML bookmark file as string
-- **Returns**: Parsed bookmark tree
-
-**Example:**
-
-```typescript
-const htmlContent = "<!DOCTYPE NETSCAPE-Bookmark-file-1>...";
-const tree = BookmarksParser.parse(htmlContent);
-```
-
-### BookmarksTree Class
-
-[`BookmarksTree`](src/BookmarksTree/BookmarksTree.ts) is a class that extends `Map<string, string | BookmarksTree>` to represent the hierarchical structure of bookmarks.
-
-#### Constructor
-
-```typescript
-const tree = new BookmarksTree();
-```
-
-#### Instance Methods
-
-##### `toJSON(): Record<string, unknown>`
-
-Convert tree to JSON object representation.
-
-```typescript
-const json = tree.toJSON();
-console.log(JSON.stringify(json, null, 2));
-```
-
-##### `toDOM(): HTMLDocument`
-
-Convert tree to HTML document object.
-
-```typescript
-const htmlDocument = tree.toDOM();
-```
-
-##### `get HTMLText(): string`
-
-Get HTML string representation of the bookmark tree.
-
-```typescript
-const htmlString = tree.HTMLText;
-console.log(htmlString); // Complete HTML bookmark file
-```
+`BookmarksParser` provides static methods to parse Netscape Bookmark format HTML or JSON and convert them into `BookmarksTree` instances.
 
 #### Static Methods
 
-##### `fromJSON(json: Record<string, unknown>): BookmarksTree`
+- [`static parse(htmlString: string): BookmarksTree`](#static-parsehtmlstring-string-bookmarkstree)
 
-Restore tree from JSON object.
+  - Parses a Netscape Bookmark format HTML string and returns a `BookmarksTree`.
+  - Alias for [`parseFromHTMLString`](#static-parsefromhtmlstringhtmlstring-string-bookmarkstree).
 
-```typescript
-const json = { Google: "https://google.com" };
-const tree = BookmarksTree.fromJSON(json);
-```
+  **Example:**
 
-##### `fromDOM(dom: HTMLDocument): BookmarksTree`
+  ```typescript
+  const html = `<!DOCTYPE NETSCAPE-Bookmark-file-1>\n<HTML><BODY><DL><p>\n  <DT><A HREF=\"https://example.com\">Example</A>\n</DL><p></BODY></HTML>`;
+  const tree = BookmarksParser.parse(html);
+  console.log(tree.toJSON());
+  ```
 
-Create tree from DOM document.
+- [`static parseFromHTMLString(htmlString: string): BookmarksTree`](#static-parsefromhtmlstringhtmlstring-string-bookmarkstree)
 
-```typescript
-const dom = new DOMParser().parseFromString(htmlContent, "text/html");
-const tree = BookmarksTree.fromDOM(dom);
-```
+  - Parses a Netscape Bookmark format HTML string and returns a `BookmarksTree`.
 
-#### Map Interface
+  **Example:**
 
-Since `BookmarksTree` extends `Map`, you can use all standard Map methods:
+  ```typescript
+  const html = `<!DOCTYPE NETSCAPE-Bookmark-file-1>...`;
+  const tree = BookmarksParser.parseFromHTMLString(html);
+  ```
 
-```typescript
-// Set bookmarks and folders
-tree.set("bookmark", "https://example.com");
-tree.set("folder", new BookmarksTree());
+- [`static parseFromDOM(dom: HTMLDocument): BookmarksTree`](#static-parsefromdomdom-htmldocument-bookmarkstree)
 
-// Get values
-const url = tree.get("bookmark"); // string
-const folder = tree.get("folder"); // BookmarksTree
+  - Converts an existing `HTMLDocument` to a `BookmarksTree`.
 
-// Check existence
-tree.has("bookmark"); // true
+  **Example:**
 
-// Delete items
-tree.delete("bookmark");
+  ```typescript
+  const dom = new DOMParser().parseFromString(html, "text/html");
+  const tree = BookmarksParser.parseFromDOM(dom);
+  ```
 
-// Iterate
-for (const [name, value] of tree) {
-	if (typeof value === "string") {
-		console.log(`Bookmark: ${name} -> ${value}`);
-	} else {
-		console.log(`Folder: ${name} (${value.size} items)`);
-	}
-}
-```
+- [`static parseFromJSON(jsonString: string): BookmarksTree`](#static-parsefromjsonjsonstring-string-bookmarkstree)
+
+  - Parses a JSON string and returns a `BookmarksTree`.
+
+  **Example:**
+
+  ```typescript
+  const json = '{"Google": "https://google.com"}';
+  const tree = BookmarksParser.parseFromJSON(json);
+  ```
+
+---
+
+### BookmarksTree Class
+
+`BookmarksTree` extends `Map` and manages folders (`BookmarksTree`) and bookmarks (URL strings) in a hierarchical structure.
+
+#### Constructor
+
+- [`new BookmarksTree()`](#constructor)
+
+  **Example:**
+
+  ```typescript
+  const tree = new BookmarksTree();
+  tree.set("Google", "https://google.com");
+  ```
+
+#### Instance Methods
+
+- [`toJSON(): Record<string, unknown>`](#tojson-recordstring-unknown)
+
+  - Converts the tree to a JSON object representation.
+
+  **Example:**
+
+  ```typescript
+  const json = tree.toJSON();
+  console.log(json);
+  ```
+
+- [`toDOM(): HTMLDocument`](#todom-htmldocument)
+
+  - Converts the tree to a Netscape Bookmark format HTML document.
+
+  **Example:**
+
+  ```typescript
+  const dom = tree.toDOM();
+  ```
+
+- [`get HTMLString(): string`](#get-htmlstring-string)
+
+  - Gets the complete HTML string in Netscape Bookmark format.
+
+  **Example:**
+
+  ```typescript
+  const html = tree.HTMLString;
+  console.log(html);
+  ```
+
+- [`get HTMLText(): string`](#get-htmltext-string)
+  - Alias for `HTMLString` (deprecated).
+
+#### Static Methods
+
+- [`static fromJSON(json: Record<string, unknown>): BookmarksTree`](#static-fromjsonjson-recordstring-unknown-bookmarkstree)
+
+  - Creates a tree from a JSON object.
+
+  **Example:**
+
+  ```typescript
+  const json = { Google: "https://google.com" };
+  const tree = BookmarksTree.fromJSON(json);
+  ```
+
+- [`static fromDOM(dom: HTMLDocument): BookmarksTree`](#static-fromdomdom-htmldocument-bookmarkstree)
+
+  - Creates a tree from an HTML document.
+
+  **Example:**
+
+  ```typescript
+  const dom = new DOMParser().parseFromString(html, "text/html");
+  const tree = BookmarksTree.fromDOM(dom);
+  ```
 
 ## Project Structure
 
@@ -365,116 +388,9 @@ npm/                         # Node.js build artifacts
 - **Empty Folder Support**: Preserves empty folders in the bookmark structure
 - **Duplicate Handling**: Last value wins for duplicate bookmark names
 
-## Output Examples
-
-### JSON Format
-
-```json
-{
-	"Development": {
-		"MDN": "https://developer.mozilla.org",
-		"Tools": {
-			"GitHub": "https://github.com",
-			"Stack Overflow": "https://stackoverflow.com"
-		}
-	},
-	"Google": "https://google.com"
-}
-```
-
-### HTML Format
-
-```html
-<!DOCTYPE NETSCAPE-Bookmark-file-1>
-<HTML>
-<META HTTP-EQUIV="Content-Type" CONTENT="text/html; charset=UTF-8">
-<TITLE>Bookmark</TITLE>
-<H1>Bookmark</H1>
-<BODY>
-<DL><p>
-    <DT><H3>Development</H3>
-    <DL><p>
-        <DT><A HREF="https://developer.mozilla.org">MDN</A>
-        <DT><H3>Tools</H3>
-        <DL><p>
-            <DT><A HREF="https://github.com">GitHub</A>
-            <DT><A HREF="https://stackoverflow.com">Stack Overflow</A>
-        </DL><p>
-    </DL><p>
-    <DT><A HREF="https://google.com">Google</A>
-</DL>
-</BODY>
-</HTML>
-```
-
 ## Dependencies
 
 - [`@b-fuze/deno-dom`](https://jsr.io/@b-fuze/deno-dom): DOM parser and manipulation for both Deno and Node.js environments
-
-## Development
-
-### Prerequisites
-
-- [Deno](https://deno.land/) 1.x or later
-
-### Setup
-
-```bash
-git clone https://github.com/grakeice/netscape-bookmark-parser.git
-cd netscape-bookmark-parser
-```
-
-### Development Commands
-
-```bash
-# Run development server with file watching
-deno task dev
-
-# Run all tests
-deno test
-
-# Run tests with coverage
-deno test --coverage
-
-# Format code
-deno fmt
-
-# Lint code
-deno lint
-
-# Build for Node.js
-deno task build:npm
-
-# Build with specific version
-deno task build:npm 1.0.0
-```
-
-### Running Tests
-
-The project includes comprehensive test suites for all functionality:
-
-```bash
-# Run all tests
-deno test
-
-# Run specific test file
-deno test src/BookmarksTree/BookmarksTree.test.ts
-
-# Run tests with detailed output
-deno test --verbose
-
-# Run tests and generate coverage report
-deno test --coverage=coverage_dir
-deno coverage coverage_dir
-```
-
-### Publishing
-
-The project uses automated publishing via GitHub Actions:
-
-1. Create a version tag: `git tag v1.0.0`
-2. Push the tag: `git push origin v1.0.0`
-3. GitHub Actions will automatically build and publish to both NPM and JSR
 
 ## Browser Compatibility
 
@@ -518,92 +434,9 @@ The library can parse bookmark files exported from:
 </DL>
 ```
 
-## Error Handling
-
-The library gracefully handles various error conditions:
-
-```typescript
-// Invalid HTML
-const invalidHtml = "<html><body>Not a bookmark file</body></html>";
-const tree = BookmarksParser.parse(invalidHtml);
-console.log(tree.size); // 0 - empty tree
-
-// Empty content
-const emptyTree = BookmarksParser.parse("");
-console.log(emptyTree.size); // 0
-
-// Malformed URLs are skipped
-const htmlWithBadUrls = `<!DOCTYPE NETSCAPE-Bookmark-file-1>
-<HTML><BODY><DL><p>
-    <DT><A HREF="">Empty URL</A>
-    <DT><A>No HREF attribute</A>
-    <DT><A HREF="https://valid.com">Valid Link</A>
-</DL><p></BODY></HTML>`;
-
-const parsedTree = BookmarksParser.parse(htmlWithBadUrls);
-console.log(parsedTree.size); // 1 - only valid link included
-```
-
-## Performance
-
-The library is optimized for performance:
-
-- **Memory Efficient**: Uses native Map structure for O(1) lookups
-- **Streaming Capable**: Can handle large bookmark files (1000+ bookmarks)
-- **Fast Parsing**: DOM-based parsing with efficient tree traversal
-- **JSON Conversion**: Optimized serialization/deserialization
-
-## TypeScript Support
-
-Full TypeScript definitions included:
-
-```typescript
-interface BookmarkValue extends Map<string, string | BookmarksTree> {
-	toJSON(): Record<string, unknown>;
-	toDOM(): HTMLDocument;
-	readonly HTMLText: string;
-}
-
-class BookmarksParser {
-	static parse(htmlContent: string): BookmarksTree;
-}
-
-class BookmarksTree extends Map<string, string | BookmarksTree> {
-	toJSON(): Record<string, unknown>;
-	static fromJSON(json: Record<string, unknown>): BookmarksTree;
-	static fromDOM(dom: HTMLDocument): BookmarksTree;
-	toDOM(): HTMLDocument;
-	get HTMLText(): string;
-}
-```
-
 ## License
 
 MIT License - See [LICENSE](LICENSE) file for details.
-
-## Contributing
-
-Pull requests and issue reports are welcome!
-
-### How to Contribute
-
-1. Fork this repository
-2. Create a feature branch (`git checkout -b feature/amazing-feature`)
-3. Make your changes with tests
-4. Ensure all tests pass (`deno test`)
-5. Format your code (`deno fmt`)
-6. Commit your changes (`git commit -m 'Add some amazing feature'`)
-7. Push to the branch (`git push origin feature/amazing-feature`)
-8. Create a pull request
-
-### Reporting Issues
-
-When reporting issues, please include:
-
-- Browser/environment information
-- Sample bookmark HTML (if applicable)
-- Expected vs actual behavior
-- Steps to reproduce
 
 ## Author
 
@@ -613,7 +446,14 @@ When reporting issues, please include:
 
 ## Changelog
 
-### v1.1.3 (Latest)
+### v1.1.4 (Latest)
+
+- 🛠️ **Improved parser** (better compatibility with various bookmark HTML formats, increased stability)
+- 🧹 **Code refactoring and additional tests**
+- 🐞 **Minor bug fixes**
+- 📚 **Documentation Update**: API Reference refresh, unified explanations, added usage examples, revived various sections
+
+### v1.1.3
 
 - 📝 **Added JSDoc comments**: Added JSDoc-style comments to major classes and methods to improve type information and enable automatic API documentation generation
 - 📚 **Documentation Update**: Added TypeScript import example for Node.js/npm in the Installation section
