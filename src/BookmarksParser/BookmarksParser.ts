@@ -42,6 +42,19 @@ export class BookmarksParser {
 	 *
 	 * @example
 	 * ```typescript
+	 * const bookmarkHtml = `<!DOCTYPE NETSCAPE-Bookmark-file-1>
+	 * <HTML>
+	 * <BODY>
+	 * <DL><p>
+	 *     <DT><A HREF="https://google.com">Google</A>
+	 *     <DT><H3>Development</H3>
+	 *     <DL><p>
+	 *         <DT><A HREF="https://github.com">GitHub</A>
+	 *     </DL><p>
+	 * </DL>
+	 * </BODY>
+	 * </HTML>`;
+	 *
 	 * const tree = BookmarksParser.parse(bookmarkHtml);
 	 * ```
 	 */
@@ -57,6 +70,19 @@ export class BookmarksParser {
 	 *
 	 * @example
 	 * ```typescript
+	 * const bookmarkHtml = `<!DOCTYPE NETSCAPE-Bookmark-file-1>
+	 * <HTML>
+	 * <BODY>
+	 * <DL><p>
+	 *     <DT><A HREF="https://google.com">Google</A>
+	 *     <DT><H3>Development</H3>
+	 *     <DL><p>
+	 *         <DT><A HREF="https://github.com">GitHub</A>
+	 *     </DL><p>
+	 * </DL>
+	 * </BODY>
+	 * </HTML>`;
+	 *
 	 * const tree = BookmarksParser.parseFromHTMLString(bookmarkHtml);
 	 * ```
 	 */

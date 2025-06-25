@@ -5,7 +5,7 @@
  * https://opensource.org/licenses/MIT
  */
 
-import { assertEquals, assertInstanceOf } from "@std/assert";
+import { assertEquals, assertInstanceOf, assertThrows } from "@std/assert";
 import { BookmarksParser } from "./BookmarksParser.ts";
 import { BookmarksTree } from "../BookmarksTree/index.ts";
 import { DOMParser } from "../deps.ts";
@@ -228,26 +228,29 @@ Deno.test("Parser.parseFromDOM works", () => {
 });
 
 Deno.test("Parser.parseFromJSONString and parseFromJSON", () => {
-	const json = '{"Google":"https://google.com","Dev":{"GitHub":"https://github.com"}}';
-	const obj = { Google: "https://google.com", Dev: { GitHub: "https://github.com" } };
+	const json =
+		'{"Google":"https://google.com","Dev":{"GitHub":"https://github.com"}}';
+	const obj = {
+		Google: "https://google.com",
+		Dev: { GitHub: "https://github.com" },
+	};
 	const treeFromJSONString = BookmarksParser.parseFromJSONString(json);
 	const treeFromJSON = BookmarksParser.parseFromJSON(obj);
 	assertInstanceOf(treeFromJSONString, BookmarksTree);
 	assertInstanceOf(treeFromJSON, BookmarksTree);
 	assertEquals(treeFromJSONString.toJSON(), treeFromJSON.toJSON());
 	assertEquals(treeFromJSONString.get("Google"), "https://google.com");
-	assertEquals((treeFromJSONString.get("Dev") as BookmarksTree).get("GitHub"), "https://github.com");
+	assertEquals(
+		(treeFromJSONString.get("Dev") as BookmarksTree).get("GitHub"),
+		"https://github.com"
+	);
 });
 
 Deno.test("Parser.parseFromJSONString with invalid JSON throws", () => {
 	const invalid = '{"Google": }';
-	let threw = false;
-	try {
+	assertThrows(() => {
 		BookmarksParser.parseFromJSONString(invalid);
-	} catch (_e) {
-		threw = true;
-	}
-	assertEquals(threw, true);
+	});
 });
 
 Deno.test("Parser.parseFromJSON with empty object", () => {
