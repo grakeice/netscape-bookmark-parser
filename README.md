@@ -4,7 +4,8 @@ A TypeScript/JavaScript library for parsing browser bookmark files (HTML format)
 
 > **Note:**  
 > This README is an AI-generated document. Details are mostly accurate but might include inaccurate description.
-> 日本語ドキュメント: [`./README-ja.md`](./README-ja.md)
+
+日本語ドキュメント: [`./README-ja.md`](./README-ja.md)
 
 ## Features
 
